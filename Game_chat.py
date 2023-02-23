@@ -70,17 +70,14 @@ async def main():
 
     while True:
         data = await input_group('Отправить сообщение', [
-            input(name='msg',
-                  help_text='Введите текст сообщения'),
-            actions(name='cmd', buttons=['Отправить', 'Многострочный ввод',
+            textarea(name='msg', help_text='Введите текст сообщения'),
+            #input(name='msg'),
+            actions(name='cmd', buttons=['Отправить',
                                          {'label': 'Выход', 'type': 'cancel'}])
         ], validate=lambda d: ('msg', 'Пустое сообщение') if d['cmd'] == 'Отправить' and not d[
             'msg'] else None)
         if data is None:
             break
-        if data['cmd'] == 'Многострочный ввод':
-            data['msg'] = '\n' + await textarea('Текст сообщения',
-                                                help_text='Введите текст сообщения')
         put_markdown('`%s`: %s' % (nickname, data['msg']), sanitize=True, scope='msg-box')
         chat_msgs.append((nickname, data['msg']))
 
