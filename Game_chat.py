@@ -37,9 +37,17 @@ async def refresh_msg(my_name):
 async def main():
     global chat_msgs, true_password
 
-    put_markdown("#🏆Добро пожаловать в игровой чат!🏆\nДанный чат разработан как вспомогательный инструмент"
-                 " для скорейшего достижения прекрасного настроения\n"
-                 "\n created by hlapps")
+    put_markdown("🏆Добро пожаловать в игровой чат!🏆").style('position: centre;'
+                                                                            'font-family: "Roboto"; font-style: normal; '
+                                                                            'font-weight: 700; font-size: 20.3221px;'
+                                                                            'line-height: 26px; text-align: center;')
+    put_text("Данный чат разработан как вспомогательный инструмент"
+                 " для скорейшего достижения прекрасного настроения").style('position: centre; '
+                                        'font-family: "Roboto"; font-style: normal; font-weight: 500; font-size: 18.088px; '
+                                        'line-height: 21px; text-align: center; color: #4A4A4A;')
+    put_row([
+        put_image('http://ipic.su/img/img7/fs/Snimokekrana2023-02-26233808.1677443918.png').style('display: block; margin: 0 auto;')
+    ], size='35%').style('justify-content: center')
 
     put_scrollable(put_scope('msg-box'), height=300, keep_bottom=True)  # поле сообщений
     nickname = await input("Войти в чат", required=True, placeholder='Введите Ваше имя',  # поле ввода имени
