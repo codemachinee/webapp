@@ -44,22 +44,28 @@ async def main():
     put_scrollable(put_scope('msg-box'), height=300, keep_bottom=True)  # поле сообщений
     nickname = await input("Войти в чат", required=True, placeholder='Введите Ваше имя',  # поле ввода имени
                            validate=lambda n: 'Такое имя уже используется' if n in online_users or n == '📢' else None)
-    if nickname in ('sexmashine', 'admin', 'сексмашина'):
-        password = await input('Введите пароль', required=False, type='password', placeholder='задайте пароль '
-                                                                                              'секретного чата')
-        true_password = password
+    if true_password is None:
+        if nickname in ('sexmashine', 'admin', 'сексмашина'):
+            password = await input('Введите пароль', required=False, type='password', placeholder='задайте пароль '
+                                                                                                  'секретного чата')
+            true_password = password
+        else:
+            password = await input('Введите пароль', required=False, type='password',
+                                   placeholder='пароль секретного чата, '
+                                               'если он есть')
         online_users.add(nickname)
-    elif true_password is None:
-        password = await input('Введите пароль', required=False, type='password', placeholder='пароль секретного чата, '
-                                                                                              'если он есть')
+        chat_msgs.append(('📢', '`%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users))))
+        put_markdown('`📢`: `%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users)),
+                     sanitize=True,
+                     scope='msg-box')
     else:
         password = await input('Введите пароль', required=False, type='password', placeholder='пароль секретного чата, '
                                                                                               'если он есть',
                                validate=lambda m: 'Неверный пароль' if m != true_password else None)
-    online_users.add(nickname)  # игрок добавлен в онлайн список
-    chat_msgs.append(('📢', '`%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users))))
-    put_markdown('`📢`: `%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users)), sanitize=True,
-                 scope='msg-box')
+        online_users.add(nickname)  # игрок добавлен в онлайн список
+        chat_msgs.append(('📢', '`%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users))))
+        put_markdown('`📢`: `%s` вошел(а) в чат. %s пользователя онлайн' % (nickname, len(online_users)), sanitize=True,
+                     scope='msg-box')
 
     @defer_call
     def on_close():
